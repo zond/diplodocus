@@ -1,28 +1,74 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
-  runApp(DiplodocusApp());
+  runApp(App());
 }
 
-class DiplodocusApp extends StatelessWidget {
-  // This widget is the root of your application.
+class App extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  AppRouterDelegate _routerDelegate = AppRouterDelegate();
+  AppRouteInformationParser _routeInformationParser = AppRouteInformationParser();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Diplodocus',
-      onGenerateRoute: (settings) {
-        if (settings.name == '/') {
-          return MaterialPageRoute(builder: (context) => DiplodocusStart());
-        }
-        return MaterialPageRoute(builder: (context) => DiplodocusStart());
-      },
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _routeInformationParser,
     );
   }
 }
 
-class DiplodocusStart extends StatelessWidget {
+class AppRouteInformationParser extends RouteInformationParser<Uri> {
+  @override
+  Future<Uri> parseRouteInformation(RouteInformation routeInformation) async {
+    return Uri.parse(routeInformation.location.toString());
+  }
+
+  @override
+  RouteInformation restoreRouteInformation(Uri uri) {
+    return RouteInformation(location: uri.toString());
+  }
+}
+
+class AppRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
+  final GlobalKey<NavigatorState> navigatorKey;
+  Uri uri = Uri.parse("/");
+
+  AppRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+
+  Uri get currentConfiguration {
+    return uri;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: navigatorKey,
+      pages: [
+        MaterialPage(
+          key: ValueKey('Login'),
+          child: Login(),
+        ),
+      ],
+      onPopPage: (route, result) {
+        return route.didPop(result);
+      },
+    );
+  }
+
+  @override
+  Future<void> setNewRoutePath(Uri uri) async {
+    this.uri = uri;
+  }
+}
+
+class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +89,7 @@ class DiplodocusStart extends StatelessWidget {
                 padding: const EdgeInsets.all(32.0),
                 child: ElevatedButton.icon(
                   icon: SvgPicture.asset(
-                      "images/google_icon.svg",
+                    "images/google_icon.svg",
                     semanticsLabel: "Google logo",
                   ),
                   onPressed: () { debugPrint("hehu"); },
