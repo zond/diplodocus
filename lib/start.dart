@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:diplodocus/main.dart';
+import 'package:diplodocus/router.gr.dart';
 
-class Start extends StatelessWidget {
+class Start extends StatefulWidget {
+  @override
+  State<Start> createState() => _StartState();
+}
+
+class _StartState extends State<Start> {
+  @override
+  void initState() {
+    serverRoot.fetchLink("my-started-games").then((resp) => setState(() {}));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +22,7 @@ class Start extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Main'),
           ],
