@@ -1,105 +1,52 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:convert';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:get_it/get_it.dart';
+
+import 'package:diplodocus/router.gr.dart';
+import 'package:diplodocus/login.dart';
+
+final getIt = GetIt.instance;
+
+void main() async {
+  await Hive.initFlutter();
+  getIt.registerSingleton<AppRouter>(AppRouter());
   runApp(App());
 }
 
 class App extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _AppState();
+  AppState createState() => AppState();
 }
 
-class _AppState extends State<App> {
-  AppRouterDelegate _routerDelegate = AppRouterDelegate();
-  AppRouteInformationParser _routeInformationParser = AppRouteInformationParser();
+Future<Map<String, dynamic>> safeFetch(Uri uri) async {
+  var done = false;
+  late http.Response resp;
+  while (!done) {
+    resp = await http.get(uri, headers: { "Accept": "application/json" });
+    if (resp.statusCode == 401) {
+      await getIt<AppRouter>().push(LoginRoute());
+    } else if (resp.statusCode == 200) {
+      done = true;
+    }
+  }
+  var res = jsonDecode(resp.body);
+  debugPrint(res);
+  return res;
+}
 
-  @override
+class AppState extends State<App> {
+  final _serverRoot = safeFetch(Uri.parse("https://diplicity-engine.appspot.com/Games/My/Started"));
+
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Diplodocus',
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routeInformationParser,
+      routerDelegate: getIt<AppRouter>().delegate(),
+      routeInformationParser: getIt<AppRouter>().defaultRouteParser(),
     );
   }
 }
 
-class AppRouteInformationParser extends RouteInformationParser<Uri> {
-  @override
-  Future<Uri> parseRouteInformation(RouteInformation routeInformation) async {
-    return Uri.parse(routeInformation.location.toString());
-  }
 
-  @override
-  RouteInformation restoreRouteInformation(Uri uri) {
-    return RouteInformation(location: uri.toString());
-  }
-}
-
-class AppRouterDelegate extends RouterDelegate<Uri> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
-  final GlobalKey<NavigatorState> navigatorKey;
-  Uri uri = Uri.parse("/");
-
-  AppRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
-
-  Uri get currentConfiguration {
-    return uri;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      pages: [
-        MaterialPage(
-          key: ValueKey('Login'),
-          child: Login(),
-        ),
-      ],
-      onPopPage: (route, result) {
-        return route.didPop(result);
-      },
-    );
-  }
-
-  @override
-  Future<void> setNewRoutePath(Uri uri) async {
-    this.uri = uri;
-  }
-}
-
-class Login extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Diplodocus"),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/login_background.jpg"),
-              fit: BoxFit.cover),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: ElevatedButton.icon(
-                  icon: SvgPicture.asset(
-                    "images/google_icon.svg",
-                    semanticsLabel: "Google logo",
-                  ),
-                  onPressed: () { debugPrint("hehu"); },
-                  label: const Text('Login'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
