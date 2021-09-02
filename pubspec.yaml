@@ -30,6 +30,7 @@ dependencies:
   auto_route:
   http:
   url_launcher:
+  google_sign_in:
 
 dev_dependencies:
   flutter_test:
