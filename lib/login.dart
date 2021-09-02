@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:diplodocus/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -25,7 +27,12 @@ class Login extends StatelessWidget {
                     "images/google_icon.svg",
                     semanticsLabel: "Google logo",
                   ),
-                  onPressed: () { debugPrint("hehu"); },
+                  onPressed: () {
+                    final uri = serverRoot.findLink("login");
+                    if (uri != null) {
+                      launch(uri.toString());
+                    }
+                  },
                   label: const Text('Login'),
                 ),
               ),

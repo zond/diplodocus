@@ -11,7 +11,11 @@ class Start extends StatefulWidget {
 class _StartState extends State<Start> {
   @override
   void initState() {
-    serverRoot.fetchLink("my-started-games").then((resp) => setState(() {}));
+    serverRoot.fetchLink("my-started-games").then((resp) {
+      if (resp != null)
+        debugPrint(resp.toString());
+      setState(() {});
+    });
     super.initState();
   }
   @override
