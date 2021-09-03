@@ -32,7 +32,7 @@ class Login extends StatelessWidget {
                 padding: const EdgeInsets.all(32.0),
                 child: ElevatedButton.icon(
                   icon: SvgPicture.asset(
-                    "images/google_icon.svg",
+                    "assets/images/google_icon.svg",
                     semanticsLabel: "Google logo",
                   ),
                   onPressed: () {
