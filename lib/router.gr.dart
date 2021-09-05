@@ -9,6 +9,7 @@ import 'package:flutter/material.dart' as _i2;
 
 import 'loading.dart' as _i3;
 import 'login.dart' as _i5;
+import 'oauth2.dart' as _i6;
 import 'start.dart' as _i4;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -31,6 +32,11 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (_) {
           return _i5.Login();
+        }),
+    OAuth2Route.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i6.OAuth2();
         })
   };
 
@@ -38,7 +44,8 @@ class AppRouter extends _i1.RootStackRouter {
   List<_i1.RouteConfig> get routes => [
         _i1.RouteConfig(LoadingRoute.name, path: '/'),
         _i1.RouteConfig(StartRoute.name, path: '/Start'),
-        _i1.RouteConfig(LoginRoute.name, path: '/Login')
+        _i1.RouteConfig(LoginRoute.name, path: '/Login'),
+        _i1.RouteConfig(OAuth2Route.name, path: '/OAuth2')
       ];
 }
 
@@ -58,4 +65,10 @@ class LoginRoute extends _i1.PageRouteInfo {
   const LoginRoute() : super(name, path: '/Login');
 
   static const String name = 'LoginRoute';
+}
+
+class OAuth2Route extends _i1.PageRouteInfo {
+  const OAuth2Route() : super(name, path: '/OAuth2');
+
+  static const String name = 'OAuth2Route';
 }

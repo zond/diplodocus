@@ -23,14 +23,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
 
   flutter_svg:
   hive:
   hive_flutter:
   auto_route:
   http:
-  url_launcher:
-  google_sign_in:
+  oauth2_client:
 
 dev_dependencies:
   flutter_test:

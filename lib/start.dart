@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:diplodocus/main.dart';
-import 'package:diplodocus/router.gr.dart';
+
+import 'main.dart';
+import 'router.gr.dart';
 
 class Start extends StatefulWidget {
   @override

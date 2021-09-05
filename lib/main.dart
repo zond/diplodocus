@@ -1,10 +1,12 @@
 import 'dart:convert';
-
-import 'package:diplodocus/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
+
+import 'conditional.dart' if (dart.library.html) 'conditional_html.dart';
+
+import 'router.gr.dart';
 
 final appRouter = AppRouter();
 final serverHost = Uri.parse("https://diplicity-engine.appspot.com");
@@ -12,6 +14,7 @@ var serverRoot = ResponseJSON(null);
 
 void main() async {
   await Hive.initFlutter();
+  configureApp();
   runApp(App());
 }
 

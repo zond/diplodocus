@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:diplodocus/main.dart';
-import 'package:diplodocus/router.gr.dart';
 import 'package:http/http.dart' as http;
+
+import 'main.dart';
+import 'router.gr.dart';
 
 class Loading extends StatefulWidget {
   @override

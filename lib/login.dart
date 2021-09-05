@@ -1,15 +1,9 @@
+import 'package:diplodocus/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:diplodocus/main.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-final GoogleSignIn _googleSignIn = GoogleSignIn(
-  clientId: "635122585664-rs3u2tb9lfi1tt6dsovie0kfdg1j5mru.apps.googleusercontent.com",
-  scopes: [
-    'email',
-  ],
-);
+import 'conditional.dart' if (dart.library.html) 'conditional_html.dart';
+import 'router.gr.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -36,12 +30,15 @@ class Login extends StatelessWidget {
                     semanticsLabel: "Google logo",
                   ),
                   onPressed: () {
-                    _googleSignIn.signIn().then((user) {
-                      if (user != null) {
-                        debugPrint(user.email);
-                      } else {
-                        debugPrint("Failed");
-                      }
+                    final loginUrl = serverRoot.findLink("login");
+                    if (loginUrl == null) {
+                      debugPrint("No login link found.");
+                      return;
+                    }
+                    final redirectedUrl = loginUrl.replace(query: "redirect-to=${redirectUrl()}");
+                    authenticate(url: redirectedUrl.toString(), callbackUrlScheme: "com.diplicity.diplodocus", redirectUrl: redirectUrl()).then((resp) {
+                      final resultUrl = Uri.parse(resp);
+                      debugPrint(resultUrl.queryParameters["token"]);
                     });
                   },
                   label: const Text('Login'),
