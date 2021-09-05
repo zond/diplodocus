@@ -14,7 +14,7 @@ class ResponseJSON {
       return null;
     }
     final link = (this.content?["Links"] as List<dynamic>).firstWhere(
-            (link) => (link as Map<String, dynamic>)["Rel"] == rel,
+        (link) => (link as Map<String, dynamic>)["Rel"] == rel,
         orElse: () => null);
     if (link == null) {
       return null;

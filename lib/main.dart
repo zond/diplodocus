@@ -22,7 +22,6 @@ class App extends StatefulWidget {
   AppState createState() => AppState();
 }
 
-
 class AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp.router(

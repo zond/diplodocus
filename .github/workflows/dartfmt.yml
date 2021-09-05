@@ -1,16 +1,20 @@
-workflow "on push" {
-  on = "push"
-  resolves = ["dartfmt"]
-}
+name: Format
 
-workflow "on review" {
-  resolves = ["dartfmt"]
-  on = "pull_request_review"
-}
+on:
+    push:
+        branches: ["*"]
 
-action "dartfmt" {
-  uses = "bltavares/actions/dartfmt@master"
-  args = ["autofix"]
-  secrets = ["GITHUB_TOKEN"]
-}
-
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Format code
+              uses: subosito/flutter-action@v1
+              run: flutter format .
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: Apply formatting changes
+                  branch: ${{ github.head_ref }}
