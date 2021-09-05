@@ -20,7 +20,8 @@ class OAuth2 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Text("This window should close immediately.", style: TextStyle(color: Colors.white)),
+              Text("This window should close immediately.",
+                  style: TextStyle(color: Colors.white)),
             ],
           ),
         ),

@@ -1,0 +1,16 @@
+workflow "on push" {
+  on = "push"
+  resolves = ["dartfmt"]
+}
+
+workflow "on review" {
+  resolves = ["dartfmt"]
+  on = "pull_request_review"
+}
+
+action "dartfmt" {
+  uses = "bltavares/actions/dartfmt@master"
+  args = ["autofix"]
+  secrets = ["GITHUB_TOKEN"]
+}
+

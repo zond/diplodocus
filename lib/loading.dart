@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'main.dart';
+import 'diplicity.dart';
 import 'router.gr.dart';
 
 class Loading extends StatefulWidget {
@@ -15,22 +16,24 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    http.get(serverHost, headers: {"Accept": "application/json"}).then((
-        response) => jsonDecode(response.body)).then((js) {
-      serverRoot = ResponseJSON(js);
-      if ((js["Properties"] as Map<String, dynamic>)["User"] == null) {
-        appRouter.push(LoginRoute());
-      } else {
-        appRouter.push(StartRoute());
-      }
-    });
+    http
+        .get(serverHost, headers: {"Accept": "application/json"})
+        .then((response) => jsonDecode(response.body))
+        .then((js) {
+          serverRoot = ResponseJSON(js);
+          if ((js["Properties"] as Map<String, dynamic>)["User"] == null) {
+            appRouter.push(LoginRoute());
+          } else {
+            appRouter.push(StartRoute());
+          }
+        });
 
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     )..addListener(() {
-      setState(() {});
-    });
+        setState(() {});
+      });
     controller.repeat();
     super.initState();
   }
