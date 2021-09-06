@@ -23,7 +23,9 @@ class Login extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(32.0),
-                child: LoginButton(onLogin: () => appRouter.pop(),),
+                child: LoginButton(
+                  onLogin: () => appRouter.pop(),
+                ),
               ),
             ],
           ),

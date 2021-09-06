@@ -74,6 +74,7 @@ class _HomeState extends State<_Home> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Text("HEHU");
@@ -81,13 +82,11 @@ class _HomeState extends State<_Home> {
 }
 
 class _StartState extends State<Start> with TickerProviderStateMixin {
-
   Map<String, dynamic>? getUser() {
     if (serverRoot.content == null) {
       return null;
     }
-    return (serverRoot.content?["Properties"] as Map<String,
-        dynamic>)["User"];
+    return (serverRoot.content?["Properties"] as Map<String, dynamic>)["User"];
   }
 
   @override
@@ -105,29 +104,34 @@ class _StartState extends State<Start> with TickerProviderStateMixin {
       appBar: AppBar(
         title: Text("Diplodocus"),
         actions: <Widget>[
-          if (getUser() != null)PopupMenuButton(
-            icon: Icon(Icons.person),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: Text("Logout"),
-                value: 0,
-              ),
-            ],
-            onSelected: (item) {
-              switch (item) {
-                case 0:
-                  rootBox.delete("token");
-                  safeFetch(serverHost).then((resp) {
-                    serverRoot = resp;
-                    toast(context, "Logged out");
-                    setState(() {});
-                  });
-              }
-            },
-          ),
+          if (getUser() != null)
+            PopupMenuButton(
+              icon: Icon(Icons.person),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Text("Logout"),
+                  value: 0,
+                ),
+              ],
+              onSelected: (item) {
+                switch (item) {
+                  case 0:
+                    rootBox.delete("token");
+                    safeFetch(serverHost).then((resp) {
+                      serverRoot = resp;
+                      toast(context, "Logged out");
+                      setState(() {});
+                    });
+                }
+              },
+            ),
         ],
       ),
-      body: serverRoot == null ? _Loading() : getUser() == null ? _Login(onLogin: () => setState(() => {})) : _Home(),
+      body: serverRoot == null
+          ? _Loading()
+          : getUser() == null
+              ? _Login(onLogin: () => setState(() => {}))
+              : _Home(),
     );
   }
 }
