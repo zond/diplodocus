@@ -4,12 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'conditional.dart' if (dart.library.html) 'conditional_html.dart';
 
-import 'router.gr.dart';
-import 'diplicity.dart';
-
-final appRouter = AppRouter();
-final serverHost = Uri.parse("https://diplicity-engine.appspot.com");
-var serverRoot = ResponseJSON(null);
+import 'globals.dart';
 
 void main() async {
   await Hive.initFlutter();

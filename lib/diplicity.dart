@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'router.gr.dart';
-import 'main.dart';
+import 'globals.dart';
 
 class ResponseJSON {
   final Map<String, dynamic>? content;

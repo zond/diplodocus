@@ -1,4 +1,3 @@
-import 'package:diplodocus/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:oauth2_client/src/base_web_auth.dart';
@@ -10,6 +9,7 @@ import 'package:oauth2_client/src/web_auth.dart'
 
 import 'conditional.dart' if (dart.library.html) 'conditional_html.dart';
 import 'toast.dart';
+import 'globals.dart';
 
 class Login extends StatelessWidget {
   @override
