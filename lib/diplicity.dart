@@ -1,11 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
 import 'router.gr.dart';
 import 'globals.dart';
 
 class ResponseJSON {
-  final Map<String, dynamic>? content;
+  late Map<String, dynamic>? content;
 
   ResponseJSON(this.content);
 
@@ -35,10 +36,17 @@ Future<ResponseJSON> safeFetch(Uri uri) async {
   var done = false;
   late http.Response resp;
   while (!done) {
-    resp = await http.get(uri, headers: {"Accept": "application/json"});
+    final headers = {"Accept": "application/json"};
+    if (rootBox.containsKey("token")) {
+      headers["Authorization"] = "bearer ${rootBox.get("token")}";
+    }
+    resp = await http.get(uri, headers: headers);
     if (resp.statusCode == 401) {
       await appRouter.push(LoginRoute());
     } else if (resp.statusCode == 200) {
+      done = true;
+    } else {
+      debugPrint("Got ${resp.statusCode}");
       done = true;
     }
   }

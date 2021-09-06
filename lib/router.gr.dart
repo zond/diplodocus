@@ -7,10 +7,9 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
-import 'loading.dart' as _i3;
-import 'login.dart' as _i5;
-import 'oauth2.dart' as _i6;
-import 'start.dart' as _i4;
+import 'login.dart' as _i4;
+import 'oauth2.dart' as _i5;
+import 'start.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
@@ -18,45 +17,33 @@ class AppRouter extends _i1.RootStackRouter {
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
-    LoadingRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i3.Loading();
-        }),
     StartRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i4.Start();
+          return _i3.Start();
         }),
     LoginRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i5.Login();
+          return _i4.Login();
         }),
     OAuth2Route.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i6.OAuth2();
+          return _i5.OAuth2();
         })
   };
 
   @override
   List<_i1.RouteConfig> get routes => [
-        _i1.RouteConfig(LoadingRoute.name, path: '/'),
-        _i1.RouteConfig(StartRoute.name, path: '/Start'),
+        _i1.RouteConfig(StartRoute.name, path: '/'),
         _i1.RouteConfig(LoginRoute.name, path: '/Login'),
         _i1.RouteConfig(OAuth2Route.name, path: '/OAuth2')
       ];
 }
 
-class LoadingRoute extends _i1.PageRouteInfo {
-  const LoadingRoute() : super(name, path: '/');
-
-  static const String name = 'LoadingRoute';
-}
-
 class StartRoute extends _i1.PageRouteInfo {
-  const StartRoute() : super(name, path: '/Start');
+  const StartRoute() : super(name, path: '/');
 
   static const String name = 'StartRoute';
 }

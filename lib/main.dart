@@ -8,6 +8,7 @@ import 'globals.dart';
 
 void main() async {
   await Hive.initFlutter();
+  rootBox = await Hive.openBox('root');
   configureApp();
   runApp(App());
 }
