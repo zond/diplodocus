@@ -1,30 +1,18 @@
 import 'package:flutter/material.dart';
 
+import 'game_list.dart';
 import 'globals.dart';
 
-class Home extends StatefulWidget {
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    Future.wait([
-      serverRoot.fetchLink("my-started-games"),
-      serverRoot.fetchLink("my-staging-games"),
-      serverRoot.fetchLink("my-finished-games")
-    ]).then((responses) {
-      responses.forEach((element) {
-        debugPrint(element?.content.toString());
-      });
-      setState(() {});
-    });
-    super.initState();
-  }
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text("HEHU");
+    final startedGamesUrl = serverRoot.findLink("my-started-games");
+    final stagingGamesUrl = serverRoot.findLink("my-staging-games");
+    final finishedGamesUrl = serverRoot.findLink("my-finished-games");
+    return Column(children: [
+      if (startedGamesUrl != null) GameList(url: startedGamesUrl),
+      if (stagingGamesUrl != null) GameList(url: stagingGamesUrl),
+      if (finishedGamesUrl != null) GameList(url: finishedGamesUrl),
+    ]);
   }
 }
