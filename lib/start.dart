@@ -5,6 +5,7 @@ import 'diplicity.dart';
 import 'spinner.dart';
 import 'login_button.dart';
 import 'toast.dart';
+import 'home.dart';
 
 class Start extends StatefulWidget {
   @override
@@ -60,27 +61,6 @@ class _Login extends StatelessWidget {
   }
 }
 
-class _Home extends StatefulWidget {
-  @override
-  State<_Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<_Home> {
-  @override
-  void initState() {
-    serverRoot.fetchLink("my-started-games").then((resp) {
-      debugPrint(resp.toString());
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text("HEHU");
-  }
-}
-
 class _StartState extends State<Start> with TickerProviderStateMixin {
   Map<String, dynamic>? getUser() {
     if (serverRoot.content == null) {
@@ -131,7 +111,7 @@ class _StartState extends State<Start> with TickerProviderStateMixin {
           ? _Loading()
           : getUser() == null
               ? _Login(onLogin: () => setState(() => {}))
-              : _Home(),
+              : Home(),
     );
   }
 }
