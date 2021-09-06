@@ -9,6 +9,7 @@ import 'package:oauth2_client/src/web_auth.dart'
     if (dart.library.html) 'package:oauth2_client/src/browser_web_auth.dart';
 
 import 'conditional.dart' if (dart.library.html) 'conditional_html.dart';
+import 'toast.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -37,7 +38,7 @@ class Login extends StatelessWidget {
                   onPressed: () {
                     final loginUrl = serverRoot.findLink("login");
                     if (loginUrl == null) {
-                      debugPrint("No login link found.");
+                      toast(context, "Error: No login link found.");
                       return;
                     }
                     final redirectedUrl =
@@ -49,6 +50,7 @@ class Login extends StatelessWidget {
                             redirectUrl: redirectUrl())
                         .then((resp) {
                       final resultUrl = Uri.parse(resp);
+                      toast(context, "Logged in!");
                       debugPrint(resultUrl.queryParameters["token"]);
                     });
                   },
