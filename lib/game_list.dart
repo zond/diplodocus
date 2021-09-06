@@ -22,6 +22,7 @@ class _GameListState extends State<GameList> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Text("HEHU");
