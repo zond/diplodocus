@@ -111,7 +111,7 @@ class _StartState extends State<Start> with TickerProviderStateMixin {
           ? _Loading()
           : getUser() == null
               ? _Login(onLogin: () => setState(() => {}))
-              : Home(),
+              : Center(child: Home()),
     );
   }
 }

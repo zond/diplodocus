@@ -10,6 +10,27 @@ class ResponseJSON {
 
   ResponseJSON(this.content);
 
+  dynamic get(List<dynamic> indices) {
+    dynamic here = content;
+    while (true) {
+      if (indices.length == 0) {
+        return here;
+      }
+      if (here == null) {
+        return null;
+      }
+      if (indices[0] is int && here is List<dynamic>) {
+        here = here[indices[0] as int];
+        indices = indices.sublist(1);
+      } else if (indices[0] is String && here is Map<String, dynamic>) {
+        here = here[indices[0] as String];
+        indices = indices.sublist(1);
+      } else {
+        return null;
+      }
+    }
+  }
+
   Uri? findLink(String rel) {
     if (this.content == null) {
       return null;
