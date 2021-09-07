@@ -45,7 +45,12 @@ class _GameListState extends State<GameList> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: (data?.content?["Properties"] as List<dynamic>?)?.where((element) => element != null).map((el) => _Element(game: ResponseJSON(el as Map<String, dynamic>))).toList() ?? [],
+      children: (data?.content?["Properties"] as List<dynamic>?)
+              ?.where((element) => element != null)
+              .map((el) =>
+                  _Element(game: ResponseJSON(el as Map<String, dynamic>)))
+              .toList() ??
+          [],
     );
     return Text("HEHU");
   }
