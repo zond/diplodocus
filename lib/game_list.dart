@@ -25,7 +25,8 @@ class _Element extends StatelessWidget {
       builder: (context, game, child) {
         return ElevatedButton(
           child: Text(game.get(["Properties", "Desc"]) as String),
-          onPressed: () => appRouter.push(GameRoute(gameID: game.get(["Properties", "ID"]) as String)),
+          onPressed: () => appRouter.push(
+              GameRoute(gameID: game.get(["Properties", "ID"]) as String)),
         );
       },
     );
