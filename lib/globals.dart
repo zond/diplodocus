@@ -11,12 +11,15 @@ final appRouter = AppRouter();
 // Server to talk to.
 final serverHost = Uri.parse("https://diplicity-engine.appspot.com");
 // Root page of the server.
-ReloadNotifier serverRoot = ReloadNotifier(value: APIResponse(null), url: serverHost, forceLoad: true);
+ReloadNotifier serverRoot =
+    ReloadNotifier(value: APIResponse(null), url: serverHost, forceLoad: true);
 // Configuration (e.g. auth token).
 late Box rootBox;
 // Cache for game objects.
-final gameCache = LruCache<String, ReloadNotifier>(storage: InMemoryStorage(64))..loader = (String key, ReloadNotifier? old) {
-  final result = ReloadNotifier(value: APIResponse(null), url: serverHost.replace(path: "Game/${key}"));
-  result.reload();
-  return result;
-};
+final gameCache = LruCache<String, ReloadNotifier>(storage: InMemoryStorage(64))
+  ..loader = (String key, ReloadNotifier? old) {
+    final result = ReloadNotifier(
+        value: APIResponse(null), url: serverHost.replace(path: "Game/${key}"));
+    result.reload();
+    return result;
+  };

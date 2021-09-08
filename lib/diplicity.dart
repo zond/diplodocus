@@ -7,15 +7,28 @@ import 'globals.dart';
 
 class ReloadNotifier extends ValueNotifier<APIResponse> {
   late Uri url;
+  Function(APIResponse)? onLoad;
 
-  ReloadNotifier({required APIResponse value, required Uri this.url, bool forceLoad = false}) : super(value) {
+  ReloadNotifier(
+      {required APIResponse value,
+      required Uri this.url,
+      this.onLoad,
+      bool forceLoad = false})
+      : super(value) {
     if (forceLoad) {
       reload();
     }
   }
 
+  static ReloadNotifier fromGame(APIResponse game) {
+    return ReloadNotifier(value: game, url: serverHost.replace(path: "Game/${game.get(["Properties", "ID"]) as String}"));
+  }
+
   void reload() {
-    safeFetch(url).then((newValue) => this.value = newValue);
+    safeFetch(url).then((newValue) {
+      onLoad?.call(newValue);
+      this.value = newValue;
+    });
   }
 }
 

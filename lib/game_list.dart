@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'diplicity.dart';
+import 'globals.dart';
 
 class GameList extends StatefulWidget {
   late Uri url;
@@ -34,7 +35,17 @@ class _GameListState extends State<GameList> {
   late ReloadNotifier data;
   @override
   void initState() {
-    data = ReloadNotifier(value: APIResponse(null), url: widget.url, forceLoad: true);
+    data = ReloadNotifier(
+        value: APIResponse(null),
+        url: widget.url,
+        forceLoad: true,
+        onLoad: (resp) {
+          (resp.get(["Properties"]) as List<dynamic>).forEach((element) {
+            final game = APIResponse(element as Map<String, dynamic>);
+            gameCache.set(game.get(["Properties", "ID"]) as String, ReloadNotifier.fromGame(game));
+          });
+        },
+    );
     super.initState();
   }
 
@@ -45,10 +56,10 @@ class _GameListState extends State<GameList> {
       builder: (context, games, child) {
         return Column(
           children: (games.content?["Properties"] as List<dynamic>?)
-              ?.where((element) => element != null)
-              .map((el) =>
-              _Element(game: APIResponse(el as Map<String, dynamic>)))
-              .toList() ??
+                  ?.where((element) => element != null)
+                  .map((el) =>
+                      _Element(game: APIResponse(el as Map<String, dynamic>)))
+                  .toList() ??
               [],
         );
       },
