@@ -11,8 +11,9 @@ Note that there's a GitHub action that runs `flutter format .` after each push, 
 ```
 cat > .git/hooks/pre-commit <<EOF
 #!/usr/bin/bash
-flutter format .
-git add $(git ls-files -m)
+staged=$(git diff --name-only --cached)
+flutter format ${staged}
+git add ${staged}
 EOF
 chmod +x .git/hooks/pre-commit
 ```
