@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'diplicity.dart';
 import 'globals.dart';
+import 'router.gr.dart';
 
 class GameList extends StatefulWidget {
   late Uri url;
@@ -24,7 +25,7 @@ class _Element extends StatelessWidget {
       builder: (context, game, child) {
         return ElevatedButton(
           child: Text(game.get(["Properties", "Desc"]) as String),
-          onPressed: () => debugPrint("click!"),
+          onPressed: () => appRouter.push(GameRoute(gameID: game.get(["Properties", "ID"]) as String)),
         );
       },
     );
