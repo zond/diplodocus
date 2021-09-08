@@ -21,7 +21,10 @@ class ReloadNotifier extends ValueNotifier<APIResponse> {
   }
 
   static ReloadNotifier fromGame(APIResponse game) {
-    return ReloadNotifier(value: game, url: serverHost.replace(path: "Game/${game.get(["Properties", "ID"]) as String}"));
+    return ReloadNotifier(
+        value: game,
+        url: serverHost.replace(
+            path: "Game/${game.get(["Properties", "ID"]) as String}"));
   }
 
   void reload() {

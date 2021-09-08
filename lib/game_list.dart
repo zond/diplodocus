@@ -36,15 +36,16 @@ class _GameListState extends State<GameList> {
   @override
   void initState() {
     data = ReloadNotifier(
-        value: APIResponse(null),
-        url: widget.url,
-        forceLoad: true,
-        onLoad: (resp) {
-          (resp.get(["Properties"]) as List<dynamic>).forEach((element) {
-            final game = APIResponse(element as Map<String, dynamic>);
-            gameCache.set(game.get(["Properties", "ID"]) as String, ReloadNotifier.fromGame(game));
-          });
-        },
+      value: APIResponse(null),
+      url: widget.url,
+      forceLoad: true,
+      onLoad: (resp) {
+        (resp.get(["Properties"]) as List<dynamic>).forEach((element) {
+          final game = APIResponse(element as Map<String, dynamic>);
+          gameCache.set(game.get(["Properties", "ID"]) as String,
+              ReloadNotifier.fromGame(game));
+        });
+      },
     );
     super.initState();
   }
