@@ -8,7 +8,11 @@ import 'globals.dart';
 class ReloadNotifier extends ValueNotifier<APIResponse> {
   late Uri url;
 
-  ReloadNotifier({required APIResponse value, required Uri this.url, bool forceLoad = false}) : super(value) {
+  ReloadNotifier(
+      {required APIResponse value,
+      required Uri this.url,
+      bool forceLoad = false})
+      : super(value) {
     if (forceLoad) {
       reload();
     }

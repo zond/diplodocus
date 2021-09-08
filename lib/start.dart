@@ -20,8 +20,7 @@ class Start extends StatelessWidget {
               if (root.get(["Properties", "User"]) != null)
                 PopupMenuButton(
                   icon: Icon(Icons.person),
-                  itemBuilder: (context) =>
-                  [
+                  itemBuilder: (context) => [
                     PopupMenuItem(
                       child: Text("Logout"),
                       value: 0,
@@ -41,8 +40,8 @@ class Start extends StatelessWidget {
           body: root.status == 0
               ? _Loading()
               : root.get(["Properties", "User"]) == null
-              ? _Login()
-              : Center(child: Home()),
+                  ? _Login()
+                  : Center(child: Home()),
         );
       },
     );
@@ -93,4 +92,3 @@ class _Login extends StatelessWidget {
     );
   }
 }
-
