@@ -63,6 +63,8 @@ Future<ResponseJSON> safeFetch(Uri uri) async {
     }
     resp = await http.get(uri, headers: headers);
     if (resp.statusCode == 401) {
+      rootBox.delete("token");
+      serverRoot = await safeFetch(serverHost);
       await appRouter.push(LoginRoute());
     } else if (resp.statusCode == 200) {
       done = true;

@@ -32,6 +32,7 @@ dependencies:
   auto_route:
   http:
   oauth2_client:
+  dcache:
 
 dev_dependencies:
   flutter_test:
