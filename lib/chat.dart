@@ -7,10 +7,10 @@ class Chat extends StatelessWidget {
   Widget build(context) {
     final game = InheritedGame.of(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Diplodocus"),
-        ),
-        body: Text("chat ${game.get(["Properties", "Desc"])}"),
+      appBar: AppBar(
+        title: Text("Diplodocus"),
+      ),
+      body: Text("chat ${game.get(["Properties", "Desc"])}"),
     );
   }
 }

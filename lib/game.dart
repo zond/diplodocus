@@ -7,7 +7,8 @@ import 'router.gr.dart';
 
 class InheritedGame extends InheritedWidget {
   final APIResponse game;
-  InheritedGame({Key? key, required this.game, required Widget child}) : super(key: key, child: child);
+  InheritedGame({Key? key, required this.game, required Widget child})
+      : super(key: key, child: child);
   @override
   bool updateShouldNotify(InheritedGame) => true;
   static APIResponse of(BuildContext context) {
@@ -38,7 +39,8 @@ class Game extends StatelessWidget {
                 onTap: tabsRouter.setActiveIndex,
                 items: [
                   BottomNavigationBarItem(icon: Icon(Icons.map), label: "Map"),
-                  BottomNavigationBarItem(icon: Icon(Icons.forum), label: "Chat"),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.forum), label: "Chat"),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.checklist), label: "Orders"),
                 ],
