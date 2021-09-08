@@ -12,6 +12,7 @@ Note that there's a GitHub action that runs `flutter format .` after each push, 
 cat > .git/hooks/pre-commit <<EOF
 #!/usr/bin/bash
 flutter format .
+git add $(git ls-files -m)
 EOF
 chmod +x .git/hooks/pre-commit
 ```
