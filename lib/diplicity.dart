@@ -28,7 +28,7 @@ class ReloadNotifier extends ValueNotifier<APIResponse> {
   }
 
   Future<ReloadNotifier> reload() async {
-    return safeFetch(url).then((newValue) {
+    return _safeFetch(url).then((newValue) {
       onLoad?.call(newValue);
       this.value = newValue;
       return this;
@@ -63,29 +63,28 @@ class APIResponse {
     }
   }
 
-  Uri? findLink(String rel) {
+  Uri findLink(String rel) {
     if (this.content == null) {
-      return null;
+      throw Exception("Content not loaded!");
     }
     final link = (this.content?["Links"] as List<dynamic>).firstWhere(
         (link) => (link as Map<String, dynamic>)["Rel"] == rel,
         orElse: () => null);
     if (link == null) {
-      return null;
+      throw Exception("Link ${rel} not found!");
     }
     return Uri.parse(link["URL"]);
   }
 
-  Future<APIResponse?> fetchLink(String rel) async {
-    Uri? uri = this.findLink(rel);
-    if (uri == null) {
-      return null;
-    }
-    return safeFetch(uri);
+  Future<ReloadNotifier> fetchLink(String rel) async {
+    final url = findLink(rel);
+    return _safeFetch(url).then((resp) {
+      return ReloadNotifier(value: resp, url: url);
+    });
   }
 }
 
-Future<APIResponse> safeFetch(Uri uri) async {
+Future<APIResponse> _safeFetch(Uri uri) async {
   var done = false;
   late http.Response resp;
   while (!done) {
@@ -96,7 +95,7 @@ Future<APIResponse> safeFetch(Uri uri) async {
     resp = await http.get(uri, headers: headers);
     if (resp.statusCode == 401) {
       rootBox.delete("token");
-      serverRoot.value = await safeFetch(serverHost);
+      serverRoot.value = await _safeFetch(serverHost);
       await appRouter.push(LoginRoute());
     } else if (resp.statusCode == 200) {
       done = true;

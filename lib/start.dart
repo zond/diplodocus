@@ -16,6 +16,7 @@ class Start extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text("Diplodocus"),
+            automaticallyImplyLeading: false,
             actions: <Widget>[
               if (root.get(["Properties", "User"]) != null)
                 PopupMenuButton(

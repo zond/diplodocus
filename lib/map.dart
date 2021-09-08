@@ -7,11 +7,6 @@ class Map extends StatelessWidget {
   @override
   Widget build(context) {
     final game = InheritedGame.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Diplodocus"),
-      ),
-      body: Text("map ${game.get(["Properties", "Desc"])}"),
-    );
+    return Text("map ${game.get(["Properties", "Desc"])}");
   }
 }

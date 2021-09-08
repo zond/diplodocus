@@ -21,7 +21,6 @@ class Game extends StatelessWidget {
   Game({Key? key, @PathParam("gameID") required this.gameID}) : super(key: key);
   @override
   Widget build(context) {
-    debugPrint(context.router.routeData.path);
     return ValueListenableBuilder<APIResponse>(
       valueListenable: gameCache.get(gameID)!,
       builder: (context, game, child) {
@@ -33,6 +32,23 @@ class Game extends StatelessWidget {
               ChatRoute(),
               OrdersRoute(),
             ],
+            appBarBuilder: (context, tabsRouter) {
+              if (context.router.canPopSelfOrChildren) {
+                return AppBar(
+                  title: Text("Diplodocus"),
+                );
+              } else {
+                return AppBar(
+                  title: Text("Diplodocus"),
+                  leading: BackButton(
+                    onPressed: () => appRouter.push(StartRoute()),
+                  ),
+                );
+              }
+              return AppBar(
+                title: Text("Diplodocus"),
+              );
+            },
             bottomNavigationBuilder: (_, tabsRouter) {
               return BottomNavigationBar(
                 currentIndex: tabsRouter.activeIndex,
