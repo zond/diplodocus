@@ -38,7 +38,8 @@ class _GameListState extends State<GameList> {
     gameIDs = [];
     safeFetch(widget.url).then((resp) {
       (resp.get(["Properties"]) as List<dynamic>).forEach((element) {
-        final game = ReloadNotifier.fromGame(APIResponse(element as Map<String, dynamic>));
+        final game = ReloadNotifier.fromGame(
+            APIResponse(element as Map<String, dynamic>));
         final gameID = game.value.get(["Properties", "ID"]) as String;
         gameCache.set(gameID, game);
         gameIDs.add(gameID);
@@ -51,9 +52,7 @@ class _GameListState extends State<GameList> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: gameIDs.map((el) =>
-                  _Element(gameID: el))
-              .toList(),
+      children: gameIDs.map((el) => _Element(gameID: el)).toList(),
     );
   }
 }
