@@ -13,12 +13,8 @@ void main() async {
   runApp(App());
 }
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   @override
-  AppState createState() => AppState();
-}
-
-class AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerDelegate: appRouter.delegate(),

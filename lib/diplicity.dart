@@ -27,10 +27,11 @@ class ReloadNotifier extends ValueNotifier<APIResponse> {
             path: "Game/${game.get(["Properties", "ID"]) as String}"));
   }
 
-  void reload() {
-    safeFetch(url).then((newValue) {
+  Future<ReloadNotifier> reload() async {
+    return safeFetch(url).then((newValue) {
       onLoad?.call(newValue);
       this.value = newValue;
+      return this;
     });
   }
 }

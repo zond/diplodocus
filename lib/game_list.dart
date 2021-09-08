@@ -3,15 +3,7 @@ import 'package:flutter/material.dart';
 import 'diplicity.dart';
 import 'globals.dart';
 import 'router.gr.dart';
-
-class GameList extends StatefulWidget {
-  late Uri url;
-
-  GameList({Key? key, required this.url}) : super(key: key);
-
-  @override
-  State<GameList> createState() => _GameListState();
-}
+import 'spinner.dart';
 
 class _Element extends StatelessWidget {
   late String gameID;
@@ -33,28 +25,37 @@ class _Element extends StatelessWidget {
   }
 }
 
-class _GameListState extends State<GameList> {
-  List<String> gameIDs = [];
-  @override
-  void initState() {
-    gameIDs = [];
-    safeFetch(widget.url).then((resp) {
-      (resp.get(["Properties"]) as List<dynamic>).forEach((element) {
+class GameList extends StatelessWidget {
+  late ReloadNotifier games;
+
+  GameList({Key? key, required Uri url}) : super(key: key) {
+    games = ReloadNotifier(value: APIResponse(null), url: url);
+    games.reload().then((reloaded) {
+      (reloaded.value.get(["Properties"]) as List<dynamic>).forEach((element) {
         final game = ReloadNotifier.fromGame(
             APIResponse(element as Map<String, dynamic>));
         final gameID = game.value.get(["Properties", "ID"]) as String;
         gameCache.set(gameID, game);
-        gameIDs.add(gameID);
       });
-      setState(() {});
     });
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: gameIDs.map((el) => _Element(gameID: el)).toList(),
+    return ValueListenableBuilder<APIResponse>(
+      valueListenable: games,
+      builder: (context, games, child) {
+        if (games.content == null) {
+          return SizedBox.shrink();
+        }
+        return Column(
+          children: (games.get(["Properties"]) as List<dynamic>).map((el) {
+            return _Element(
+                gameID: APIResponse(el as Map<String, dynamic>)
+                    .get(["Properties", "ID"]) as String);
+          }).toList(),
+        );
+      },
     );
   }
 }
