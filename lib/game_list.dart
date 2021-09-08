@@ -12,7 +12,7 @@ class GameList extends StatefulWidget {
 }
 
 class _Element extends StatefulWidget {
-  late ResponseJSON game;
+  late APIResponse game;
 
   _Element({Key? key, required this.game}) : super(key: key);
 
@@ -31,26 +31,27 @@ class _ElementState extends State<_Element> {
 }
 
 class _GameListState extends State<GameList> {
-  ResponseJSON? data;
+  late ReloadNotifier data;
   @override
   void initState() {
-    safeFetch(widget.url).then((resp) {
-      setState(() {
-        data = resp;
-      });
-    });
+    data = ReloadNotifier(value: APIResponse(null), url: widget.url, forceLoad: true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: (data?.content?["Properties"] as List<dynamic>?)
+    return ValueListenableBuilder<APIResponse>(
+      valueListenable: data,
+      builder: (context, games, child) {
+        return Column(
+          children: (games.content?["Properties"] as List<dynamic>?)
               ?.where((element) => element != null)
               .map((el) =>
-                  _Element(game: ResponseJSON(el as Map<String, dynamic>)))
+              _Element(game: APIResponse(el as Map<String, dynamic>)))
               .toList() ??
-          [],
+              [],
+        );
+      },
     );
     return Text("HEHU");
   }

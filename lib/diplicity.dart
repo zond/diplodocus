@@ -5,10 +5,25 @@ import 'package:flutter/material.dart';
 import 'router.gr.dart';
 import 'globals.dart';
 
-class ResponseJSON {
-  late Map<String, dynamic>? content;
+class ReloadNotifier extends ValueNotifier<APIResponse> {
+  late Uri url;
 
-  ResponseJSON(this.content);
+  ReloadNotifier({required APIResponse value, required Uri this.url, bool forceLoad = false}) : super(value) {
+    if (forceLoad) {
+      reload();
+    }
+  }
+
+  void reload() {
+    safeFetch(url).then((newValue) => this.value = newValue);
+  }
+}
+
+class APIResponse {
+  late Map<String, dynamic>? content;
+  late int status;
+
+  APIResponse(this.content, {this.status = 0});
 
   dynamic get(List<dynamic> indices) {
     dynamic here = content;
@@ -44,7 +59,7 @@ class ResponseJSON {
     return Uri.parse(link["URL"]);
   }
 
-  Future<ResponseJSON?> fetchLink(String rel) async {
+  Future<APIResponse?> fetchLink(String rel) async {
     Uri? uri = this.findLink(rel);
     if (uri == null) {
       return null;
@@ -53,7 +68,7 @@ class ResponseJSON {
   }
 }
 
-Future<ResponseJSON> safeFetch(Uri uri) async {
+Future<APIResponse> safeFetch(Uri uri) async {
   var done = false;
   late http.Response resp;
   while (!done) {
@@ -64,14 +79,14 @@ Future<ResponseJSON> safeFetch(Uri uri) async {
     resp = await http.get(uri, headers: headers);
     if (resp.statusCode == 401) {
       rootBox.delete("token");
-      serverRoot = await safeFetch(serverHost);
+      serverRoot.value = await safeFetch(serverHost);
       await appRouter.push(LoginRoute());
     } else if (resp.statusCode == 200) {
       done = true;
     } else {
-      debugPrint("Got ${resp.statusCode}");
+      debugPrint("${uri.toString} => ${resp.statusCode}");
       done = true;
     }
   }
-  return ResponseJSON(jsonDecode(resp.body));
+  return APIResponse(jsonDecode(resp.body), status: resp.statusCode);
 }

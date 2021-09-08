@@ -25,7 +25,7 @@ class LoginButton extends StatelessWidget {
         semanticsLabel: "Google logo",
       ),
       onPressed: () {
-        final loginUrl = serverRoot.findLink("login");
+        final loginUrl = serverRoot.value.findLink("login");
         if (loginUrl == null) {
           toast(context, "Error: No login link found.");
           return;
@@ -40,11 +40,9 @@ class LoginButton extends StatelessWidget {
             .then((resp) {
           final resultUrl = Uri.parse(resp);
           rootBox.put("token", resultUrl.queryParameters["token"]);
-          safeFetch(serverHost).then((resp) {
-            serverRoot = resp;
-            toast(context, "Logged in");
-            onLogin();
-          });
+          serverRoot.reload();
+          toast(context, "Logged in");
+          onLogin();
         });
       },
       label: const Text('Login'),

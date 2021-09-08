@@ -7,9 +7,46 @@ import 'login_button.dart';
 import 'toast.dart';
 import 'home.dart';
 
-class Start extends StatefulWidget {
+class Start extends StatelessWidget {
   @override
-  State<Start> createState() => _StartState();
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<APIResponse>(
+      valueListenable: serverRoot,
+      builder: (context, root, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("Diplodocus"),
+            actions: <Widget>[
+              if (root.get(["Properties", "User"]) != null)
+                PopupMenuButton(
+                  icon: Icon(Icons.person),
+                  itemBuilder: (context) =>
+                  [
+                    PopupMenuItem(
+                      child: Text("Logout"),
+                      value: 0,
+                    ),
+                  ],
+                  onSelected: (item) {
+                    switch (item) {
+                      case 0:
+                        rootBox.delete("token");
+                        serverRoot.reload();
+                        toast(context, "Logged out");
+                    }
+                  },
+                ),
+            ],
+          ),
+          body: root.status == 0
+              ? _Loading()
+              : root.get(["Properties", "User"]) == null
+              ? _Login()
+              : Center(child: Home()),
+        );
+      },
+    );
+  }
 }
 
 Widget withLoginBackground(Widget widget) {
@@ -39,10 +76,6 @@ class _Loading extends StatelessWidget {
 }
 
 class _Login extends StatelessWidget {
-  late VoidCallback onLogin;
-
-  _Login({Key? key, required this.onLogin}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return withLoginBackground(
@@ -52,7 +85,7 @@ class _Login extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(32.0),
-              child: LoginButton(onLogin: onLogin),
+              child: LoginButton(onLogin: () => serverRoot.reload()),
             ),
           ],
         ),
@@ -61,57 +94,3 @@ class _Login extends StatelessWidget {
   }
 }
 
-class _StartState extends State<Start> with TickerProviderStateMixin {
-  Map<String, dynamic>? getUser() {
-    if (serverRoot.content == null) {
-      return null;
-    }
-    return (serverRoot.content?["Properties"] as Map<String, dynamic>)["User"];
-  }
-
-  @override
-  void initState() {
-    safeFetch(serverHost).then((resp) {
-      serverRoot = resp;
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Diplodocus"),
-        actions: <Widget>[
-          if (getUser() != null)
-            PopupMenuButton(
-              icon: Icon(Icons.person),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  child: Text("Logout"),
-                  value: 0,
-                ),
-              ],
-              onSelected: (item) {
-                switch (item) {
-                  case 0:
-                    rootBox.delete("token");
-                    safeFetch(serverHost).then((resp) {
-                      serverRoot = resp;
-                      toast(context, "Logged out");
-                      setState(() {});
-                    });
-                }
-              },
-            ),
-        ],
-      ),
-      body: serverRoot == null
-          ? _Loading()
-          : getUser() == null
-              ? _Login(onLogin: () => setState(() => {}))
-              : Center(child: Home()),
-    );
-  }
-}
