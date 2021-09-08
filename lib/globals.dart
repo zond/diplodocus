@@ -14,11 +14,12 @@ final serverHost = Uri.parse("https://diplicity-engine.appspot.com");
 late ReloadNotifier variants;
 // Root page of the server.
 final ReloadNotifier serverRoot =
-    ReloadNotifier(value: APIResponse(null), url: serverHost)..reload().then((root) {
-      root.value.fetchLink("variants").then((resp) {
-        variants = resp;
+    ReloadNotifier(value: APIResponse(null), url: serverHost)
+      ..reload().then((root) {
+        root.value.fetchLink("variants").then((resp) {
+          variants = resp;
+        });
       });
-    });
 // Configuration (e.g. auth token).
 late Box rootBox;
 // Cache for game objects.
