@@ -39,26 +39,26 @@ class AppRouter extends _i1.RootStackRouter {
     GameRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
-          final args = data.argsAs<GameRouteArgs>();
+          final pathParams = data.pathParams;
+          final args = data.argsAs<GameRouteArgs>(
+              orElse: () =>
+                  GameRouteArgs(gameID: pathParams.getString('gameID')));
           return _i6.Game(key: args.key, gameID: args.gameID);
         }),
     MapRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<MapRouteArgs>();
-          return _i7.Map(key: args.key, gameID: args.gameID);
+        builder: (_) {
+          return _i7.Map();
         }),
     ChatRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<ChatRouteArgs>();
-          return _i8.Chat(key: args.key, gameID: args.gameID);
+        builder: (_) {
+          return _i8.Chat();
         }),
     OrdersRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<OrdersRouteArgs>();
-          return _i9.Orders(key: args.key, gameID: args.gameID);
+        builder: (_) {
+          return _i9.Orders();
         })
   };
 
@@ -67,7 +67,7 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(StartRoute.name, path: '/'),
         _i1.RouteConfig(LoginRoute.name, path: '/Login'),
         _i1.RouteConfig(OAuth2Route.name, path: '/OAuth2'),
-        _i1.RouteConfig(GameRoute.name, path: '/Game', children: [
+        _i1.RouteConfig(GameRoute.name, path: '/Game/:gameID', children: [
           _i1.RouteConfig(MapRoute.name, path: ''),
           _i1.RouteConfig(ChatRoute.name, path: 'Chat'),
           _i1.RouteConfig(OrdersRoute.name, path: 'Orders')
@@ -97,8 +97,9 @@ class GameRoute extends _i1.PageRouteInfo<GameRouteArgs> {
   GameRoute(
       {_i2.Key? key, required String gameID, List<_i1.PageRouteInfo>? children})
       : super(name,
-            path: '/Game',
+            path: '/Game/:gameID',
             args: GameRouteArgs(key: key, gameID: gameID),
+            rawPathParams: {'gameID': gameID},
             initialChildren: children);
 
   static const String name = 'GameRoute';
@@ -112,49 +113,20 @@ class GameRouteArgs {
   final String gameID;
 }
 
-class MapRoute extends _i1.PageRouteInfo<MapRouteArgs> {
-  MapRoute({_i2.Key? key, required String gameID})
-      : super(name, path: '', args: MapRouteArgs(key: key, gameID: gameID));
+class MapRoute extends _i1.PageRouteInfo {
+  const MapRoute() : super(name, path: '');
 
   static const String name = 'MapRoute';
 }
 
-class MapRouteArgs {
-  const MapRouteArgs({this.key, required this.gameID});
-
-  final _i2.Key? key;
-
-  final String gameID;
-}
-
-class ChatRoute extends _i1.PageRouteInfo<ChatRouteArgs> {
-  ChatRoute({_i2.Key? key, required String gameID})
-      : super(name,
-            path: 'Chat', args: ChatRouteArgs(key: key, gameID: gameID));
+class ChatRoute extends _i1.PageRouteInfo {
+  const ChatRoute() : super(name, path: 'Chat');
 
   static const String name = 'ChatRoute';
 }
 
-class ChatRouteArgs {
-  const ChatRouteArgs({this.key, required this.gameID});
-
-  final _i2.Key? key;
-
-  final String gameID;
-}
-
-class OrdersRoute extends _i1.PageRouteInfo<OrdersRouteArgs> {
-  OrdersRoute({_i2.Key? key, required String gameID})
-      : super(name,
-            path: 'Orders', args: OrdersRouteArgs(key: key, gameID: gameID));
+class OrdersRoute extends _i1.PageRouteInfo {
+  const OrdersRoute() : super(name, path: 'Orders');
 
   static const String name = 'OrdersRoute';
-}
-
-class OrdersRouteArgs {
-  const OrdersRouteArgs({this.key, required this.gameID});
-
-  final _i2.Key? key;
-
-  final String gameID;
 }

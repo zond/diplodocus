@@ -7,17 +7,18 @@ import 'router.gr.dart';
 
 class Game extends StatelessWidget {
   late String gameID;
-  Game({Key? key, required this.gameID}) : super(key: key);
+  Game({Key? key, @PathParam("gameID") required this.gameID}) : super(key: key);
   @override
   Widget build(context) {
+    debugPrint(context.router.routeData.path);
     return ValueListenableBuilder<APIResponse>(
       valueListenable: gameCache.get(gameID)!,
       builder: (context, game, child) {
         return AutoTabsScaffold(
           routes: [
-            MapRoute(gameID: gameID),
-            ChatRoute(gameID: gameID),
-            OrdersRoute(gameID: gameID),
+            MapRoute(),
+            ChatRoute(),
+            OrdersRoute(),
           ],
           bottomNavigationBuilder: (_, tabsRouter) {
             return BottomNavigationBar(

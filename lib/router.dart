@@ -15,10 +15,11 @@ import 'orders.dart';
     AutoRoute(page: OAuth2, path: "/OAuth2"),
     AutoRoute(
       page: Game,
+      path: "/Game/:gameID",
       children: [
         AutoRoute(page: Map, path: ''),
-        AutoRoute(page: Chat),
-        AutoRoute(page: Orders),
+        AutoRoute(page: Chat, path: 'Chat'),
+        AutoRoute(page: Orders, path: 'Orders'),
       ],
     )
   ],
