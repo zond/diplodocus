@@ -12,59 +12,48 @@ class GameList extends StatefulWidget {
   State<GameList> createState() => _GameListState();
 }
 
-class _Element extends StatefulWidget {
-  late APIResponse game;
+class _Element extends StatelessWidget {
+  late String gameID;
 
-  _Element({Key? key, required this.game}) : super(key: key);
+  _Element({Key? key, required this.gameID}) : super(key: key);
 
-  @override
-  State<_Element> createState() => _ElementState();
-}
-
-class _ElementState extends State<_Element> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: Text(widget.game.get(["Properties", "Desc"]) as String),
-      onPressed: () => debugPrint("click!"),
+    return ValueListenableBuilder<APIResponse>(
+      valueListenable: gameCache.get(gameID)!,
+      builder: (context, game, child) {
+        return ElevatedButton(
+          child: Text(game.get(["Properties", "Desc"]) as String),
+          onPressed: () => debugPrint("click!"),
+        );
+      },
     );
   }
 }
 
 class _GameListState extends State<GameList> {
-  late ReloadNotifier data;
+  List<String> gameIDs = [];
   @override
   void initState() {
-    data = ReloadNotifier(
-      value: APIResponse(null),
-      url: widget.url,
-      forceLoad: true,
-      onLoad: (resp) {
-        (resp.get(["Properties"]) as List<dynamic>).forEach((element) {
-          final game = APIResponse(element as Map<String, dynamic>);
-          gameCache.set(game.get(["Properties", "ID"]) as String,
-              ReloadNotifier.fromGame(game));
-        });
-      },
-    );
+    gameIDs = [];
+    safeFetch(widget.url).then((resp) {
+      (resp.get(["Properties"]) as List<dynamic>).forEach((element) {
+        final game = ReloadNotifier.fromGame(APIResponse(element as Map<String, dynamic>));
+        final gameID = game.value.get(["Properties", "ID"]) as String;
+        gameCache.set(gameID, game);
+        gameIDs.add(gameID);
+      });
+      setState(() {});
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<APIResponse>(
-      valueListenable: data,
-      builder: (context, games, child) {
-        return Column(
-          children: (games.content?["Properties"] as List<dynamic>?)
-                  ?.where((element) => element != null)
-                  .map((el) =>
-                      _Element(game: APIResponse(el as Map<String, dynamic>)))
-                  .toList() ??
-              [],
-        );
-      },
+    return Column(
+      children: gameIDs.map((el) =>
+                  _Element(gameID: el))
+              .toList(),
     );
-    return Text("HEHU");
   }
 }
