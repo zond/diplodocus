@@ -7,6 +7,6 @@ import 'diplicity.dart';
 class Chat extends StatelessWidget {
   @override
   Widget build(context) {
-        return Text("chat");
+    return Text("chat");
   }
 }

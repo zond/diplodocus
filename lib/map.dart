@@ -7,6 +7,6 @@ import 'diplicity.dart';
 class Map extends StatelessWidget {
   @override
   Widget build(context) {
-        return Text("map");
+    return Text("map");
   }
 }

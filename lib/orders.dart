@@ -7,6 +7,6 @@ import 'diplicity.dart';
 class Orders extends StatelessWidget {
   @override
   Widget build(context) {
-        return Text("orders");
+    return Text("orders");
   }
 }
