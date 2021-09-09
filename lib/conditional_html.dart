@@ -1,4 +1,5 @@
 import 'dart:html' as html;
+
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'router.gr.dart';

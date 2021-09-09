@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'login_button.dart';
 import 'globals.dart';
+import 'login_button.dart';
 
 class Login extends StatelessWidget {
   @override

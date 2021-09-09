@@ -1,9 +1,10 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/material.dart';
 
-import 'router.gr.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import 'globals.dart';
+import 'router.gr.dart';
 
 class ReloadNotifier extends ValueNotifier<APIResponse> {
   late Uri url;
@@ -20,11 +21,17 @@ class ReloadNotifier extends ValueNotifier<APIResponse> {
     }
   }
 
+  void copyFrom(ReloadNotifier other) {
+    url = other.url;
+    onLoad = other.onLoad;
+    value = other.value;
+  }
+
   static ReloadNotifier fromGame(APIResponse game) {
     return ReloadNotifier(
         value: game,
-        url: serverHost.replace(
-            path: "Game/${game.get(["Properties", "ID"]) as String}"));
+        url:
+            serverHost.replace(path: "Game/${game.get(["Properties", "ID"])}"));
   }
 
   Future<ReloadNotifier> reload() async {
@@ -42,11 +49,24 @@ class APIResponse {
 
   APIResponse(this.content, {this.status = 0});
 
-  dynamic get(List<dynamic> indices) {
+  bool has(List<dynamic> indices) {
+    return _get(indices) != null;
+  }
+
+  T get<T>(List<dynamic> indices) {
+    final found = _get<T>(indices);
+    if (found == null) {
+      throw Exception(
+          "Can't find ${indices.toString()} in ${content.toString()}!");
+    }
+    return found;
+  }
+
+  T? _get<T>(List<dynamic> indices) {
     dynamic here = content;
     while (true) {
       if (indices.length == 0) {
-        return here;
+        return here as T;
       }
       if (here == null) {
         return null;

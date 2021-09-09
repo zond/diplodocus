@@ -28,9 +28,16 @@ class _SpinnerState extends State<Spinner> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return CircularProgressIndicator(
-      value: controller.value,
-      semanticsLabel: 'Linear progress indicator',
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(
+            value: controller.value,
+            semanticsLabel: 'Linear progress indicator',
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,12 +1,12 @@
 import 'package:auto_route/annotations.dart';
 
-import 'login.dart';
-import 'start.dart';
-import 'oauth2.dart';
-import 'game.dart';
-import 'map.dart';
 import 'chat.dart';
+import 'game.dart';
+import 'login.dart';
+import 'map.dart';
+import 'oauth2.dart';
 import 'orders.dart';
+import 'start.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[

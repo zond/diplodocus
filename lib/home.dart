@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import 'game_list.dart';
 import 'globals.dart';
+import 'spinner.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class Home extends StatelessWidget {
       valueListenable: serverRoot,
       builder: (context, serverRoot, child) {
         if (serverRoot.content == null) {
-          return SizedBox.shrink();
+          return Spinner();
         }
         final startedGamesUrl = serverRoot.findLink("my-started-games");
         final stagingGamesUrl = serverRoot.findLink("my-staging-games");

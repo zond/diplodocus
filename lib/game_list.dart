@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'diplicity.dart';
 import 'globals.dart';
 import 'router.gr.dart';
-import 'spinner.dart';
 
 class _Element extends StatelessWidget {
   late String gameID;
@@ -16,9 +15,9 @@ class _Element extends StatelessWidget {
       valueListenable: gameCache.get(gameID)!,
       builder: (context, game, child) {
         return ElevatedButton(
-          child: Text(game.get(["Properties", "Desc"]) as String),
-          onPressed: () => appRouter.push(
-              GameRoute(gameID: game.get(["Properties", "ID"]) as String)),
+          child: Text(game.get<String>(["Properties", "Desc"])),
+          onPressed: () => appRouter
+              .push(GameRoute(gameID: game.get<String>(["Properties", "ID"]))),
         );
       },
     );
@@ -31,10 +30,10 @@ class GameList extends StatelessWidget {
   GameList({Key? key, required Uri url}) : super(key: key) {
     games = ReloadNotifier(value: APIResponse(null), url: url);
     games.reload().then((reloaded) {
-      (reloaded.value.get(["Properties"]) as List<dynamic>).forEach((element) {
+      reloaded.value.get<List<dynamic>>(["Properties"]).forEach((element) {
         final game = ReloadNotifier.fromGame(
             APIResponse(element as Map<String, dynamic>));
-        final gameID = game.value.get(["Properties", "ID"]) as String;
+        final gameID = game.value.get<String>(["Properties", "ID"]);
         gameCache.set(gameID, game);
       });
     });
@@ -49,10 +48,11 @@ class GameList extends StatelessWidget {
           return SizedBox.shrink();
         }
         return Column(
-          children: (games.get(["Properties"]) as List<dynamic>).map((el) {
+          children: games.get<List<dynamic>>(["Properties"]).map((el) {
             return _Element(
-                gameID: APIResponse(el as Map<String, dynamic>)
-                    .get(["Properties", "ID"]) as String);
+              gameID: APIResponse(el as Map<String, dynamic>)
+                  .get<String>(["Properties", "ID"]),
+            );
           }).toList(),
         );
       },

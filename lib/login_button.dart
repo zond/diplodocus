@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:oauth2_client/src/base_web_auth.dart';
 import 'package:oauth2_client/src/web_auth.dart'
 // ignore: uri_does_not_exist
     if (dart.library.io) 'package:oauth2_client/src/io_web_auth.dart'
@@ -8,9 +7,8 @@ import 'package:oauth2_client/src/web_auth.dart'
     if (dart.library.html) 'package:oauth2_client/src/browser_web_auth.dart';
 
 import 'conditional.dart' if (dart.library.html) 'conditional_html.dart';
-import 'toast.dart';
 import 'globals.dart';
-import 'diplicity.dart';
+import 'toast.dart';
 
 class LoginButton extends StatelessWidget {
   late VoidCallback onLogin;

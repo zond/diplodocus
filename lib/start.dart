@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'globals.dart';
 import 'diplicity.dart';
-import 'spinner.dart';
-import 'login_button.dart';
-import 'toast.dart';
+import 'globals.dart';
 import 'home.dart';
+import 'login_button.dart';
+import 'spinner.dart';
+import 'toast.dart';
 
 class Start extends StatelessWidget {
   @override
@@ -18,7 +18,7 @@ class Start extends StatelessWidget {
             title: Text("Diplodocus"),
             automaticallyImplyLeading: false,
             actions: <Widget>[
-              if (root.get(["Properties", "User"]) != null)
+              if (root.has(["Properties", "User"]))
                 PopupMenuButton(
                   icon: Icon(Icons.person),
                   itemBuilder: (context) => [
@@ -40,9 +40,9 @@ class Start extends StatelessWidget {
           ),
           body: root.status == 0
               ? _Loading()
-              : root.get(["Properties", "User"]) == null
-                  ? _Login()
-                  : Center(child: Home()),
+              : root.has(["Properties", "User"])
+                  ? Center(child: Home())
+                  : _Login(),
         );
       },
     );
@@ -63,14 +63,7 @@ class _Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return withLoginBackground(
-      Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spinner(),
-          ],
-        ),
-      ),
+      Spinner(),
     );
   }
 }
