@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'game.dart';
 import 'globals.dart';
@@ -15,7 +17,18 @@ class Map extends StatelessWidget {
         if (game.content == null || variants.content == null) {
           return Spinner();
         }
-        return Text("map ${game.get(["Properties", "Desc"])}");
+        final variant = variants.get<APIResponse>([
+          "Properties",
+          (APIResponse variant) =>
+              variant.get<String>(["Properties", "Name"]) ==
+              game.get<String>(["Properties", "Variant"])
+        ]);
+        return ListView(
+          children: [
+            Text("map ${game.get(["Properties", "Desc"])}"),
+            SvgPicture.network(variant.findLink("map").toString()),
+          ],
+        );
       },
     );
   }
