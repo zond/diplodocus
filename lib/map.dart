@@ -28,7 +28,8 @@ class Map extends StatelessWidget {
             Text("map ${game.get(["Properties", "Desc"])}"),
             InteractiveViewer(
               clipBehavior: Clip.none,
-              child: SvgPicture.network(variant.findLink("map").toString(), width: 100, height: 100),
+              child: SvgPicture.network(variant.findLink("map").toString(),
+                  width: 100, height: 100),
             ),
           ],
         );
