@@ -23,10 +23,13 @@ class Map extends StatelessWidget {
               variant.get<String>(["Properties", "Name"]) ==
               game.get<String>(["Properties", "Variant"])
         ]);
-        return ListView(
+        return Column(
           children: [
             Text("map ${game.get(["Properties", "Desc"])}"),
-            SvgPicture.network(variant.findLink("map").toString()),
+            InteractiveViewer(
+              clipBehavior: Clip.none,
+              child: SvgPicture.network(variant.findLink("map").toString(), width: 100, height: 100),
+            ),
           ],
         );
       },
