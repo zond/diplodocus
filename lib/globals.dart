@@ -1,7 +1,6 @@
 import 'package:dcache/dcache.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter/material.dart';
 
 import 'diplicity.dart';
 import 'router.gr.dart';
