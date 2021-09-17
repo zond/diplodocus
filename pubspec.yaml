@@ -33,6 +33,7 @@ dependencies:
   http:
   oauth2_client:
   dcache:
+  flutter_inappwebview:
 
 dev_dependencies:
   flutter_test:
